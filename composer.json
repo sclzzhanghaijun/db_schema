@@ -1,0 +1,12 @@
+{
+    "name": "sclzzhanghaijun/db_schema",
+    "description": "mysql database schema",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "xiaohai",
+            "email": "sclzzhanghaijun@163.com"
+        }
+    ],
+    "require": {}
+}
