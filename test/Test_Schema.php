@@ -31,7 +31,7 @@ class TestSchema implements \SCLZZHJ\Schema\SchemaInterFace
 
 $schema = new SCLZZHJ\Schema\Schema(new TestSchema(), "name");
 
-try{
+try {
     $table = $schema->make();
     $html = <<<EOF
     <html lang="zh">
@@ -81,9 +81,9 @@ try{
     /*table end*/ 
 </style>
 EOF;
-    $html .= "<body>".$table."</body></html>";
+    $html .= "<body>" . $table . "</body></html>";
     file_put_contents("../index.html", $html);
-}catch (\Exception $exception){
+} catch (\Exception $exception) {
     echo $exception->getMessage();
 }
 
