@@ -90,4 +90,4 @@ EOF;
 ```
 
 ### 最终效果
-![图片](images/image1.png)
+![图片](/images/image1.png)
