@@ -88,3 +88,6 @@ EOF;
     echo $exception->getMessage();
 }
 ```
+
+### 最终效果
+![图片](images/image1.png)
