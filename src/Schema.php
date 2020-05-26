@@ -66,7 +66,7 @@ class Schema
             $html .= '<td>字段描述</td>';
             $html .= '<td>备注</td>';
             $html .= '</tr>';
-            $sqlColumn = "SELECT * FROM `COLUMNS` WHERE information_schema.`TABLE_SCHEMA` = '{$this->dbName}' AND `TABLE_NAME` = '{$rowTable['TABLE_NAME']}'"; //构建查询语句
+            $sqlColumn = "SELECT * FROM information_schema.`COLUMNS` WHERE `TABLE_SCHEMA` = '{$this->dbName}' AND `TABLE_NAME` = '{$rowTable['TABLE_NAME']}'"; //构建查询语句
             $queryColumns = $this->sqlExecCallBack->SqlExec($sqlColumn);
             if (!is_array($queryColumns)) {
 
