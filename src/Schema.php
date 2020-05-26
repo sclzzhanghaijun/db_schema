@@ -25,15 +25,24 @@ class Schema
      */
     private $sqlExecCallBack;
 
+
+    /**
+     * 指定表
+     * User: zhj
+     * @var array
+     */
+    private $tables = [];
+
     /**
      * Schema constructor.
      * @param SchemaInterFace $sqlExecCallBack
      * @param $dbName
      */
-    public function __construct(SchemaInterFace $sqlExecCallBack, $dbName)
+    public function __construct(SchemaInterFace $sqlExecCallBack, $dbName, $tables = [])
     {
         $this->sqlExecCallBack = $sqlExecCallBack;
         $this->dbName = $dbName;
+        $this->tables = $tables;
     }
 
     /**
@@ -50,6 +59,10 @@ class Schema
         }
         $html = '<table class="table_schema">';
         foreach ($tables as $key => $rowTable) {
+            //过滤表
+            if ($this->tables && !in_array($rowTable['TABLE_NAME'], $this->tables)) {
+                continue;
+            }
             if ($key > 0) {
                 $html .= '<tr>';
                 $html .= '<td colspan="7">&nbsp;</td>';
