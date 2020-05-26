@@ -1,4 +1,5 @@
 {
+    "version": "0.0.1",
     "name": "sclzzhanghaijun/db_schema",
     "description": "mysql database schema",
     "license": "MIT",
