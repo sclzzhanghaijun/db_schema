@@ -17,7 +17,7 @@ class TestSchema implements \SCLZZHJ\Schema\SchemaInterFace
                 ['TABLE_NAME' => 'table_1', 'TABLE_COMMENT' => '表1'],
                 ['TABLE_NAME' => 'table_2', 'TABLE_COMMENT' => '表2'],
             ];
-        } else if (strstr($sql, "`COLUMNS`")) {
+        } else if (strstr($sql, "`COLUMNS`") !== false) {
             return [
                 ['COLUMN_NAME' => 'column_1', 'COLUMN_COMMENT' => '列1', 'COLUMN_TYPE' => 'varchar'],
                 ['COLUMN_NAME' => 'column_2', 'COLUMN_COMMENT' => '列2', 'COLUMN_TYPE' => 'int'],
