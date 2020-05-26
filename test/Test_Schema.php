@@ -8,7 +8,7 @@
 
 require_once "../vendor/autoload.php";
 
-class TestSchema implements \SCLZZHJ\Schema\SchemaInterFace
+class TestSchema implements SCLZZHJ\Schema\SchemaInterFace
 {
     public function SqlExec($sql)
     {

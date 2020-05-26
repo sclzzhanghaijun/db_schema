@@ -9,7 +9,7 @@ composer require sclzzhanghaijun/db_schema
 #### 使用
 ```php
 //首先需要实现一个接口，返回结果必须是数组
-class TestSchema implements \SCLZZHJ\Schema\SchemaInterFace
+class TestSchema implements SCLZZHJ\Schema\SchemaInterFace
 {
     public function SqlExec($sql)
     {
