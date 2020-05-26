@@ -1,40 +1,64 @@
 #### db_schema
-本项目主要是生成Mysql的表结构，返回Html，可以自定义显示table样式。
+本项目主要是生成Mysql的表结构，返回Html，可以自定义显示table样式。支持所有php项目，只需要实现数据查询方法。
 
 #### 安装
 ```bash
 composer require sclzzhanghaijun/db_schema
 ```
 
-#### 使用
+### Laravel使用
 ```php
-//首先需要实现一个接口，返回结果必须是数组
-class TestSchema implements SCLZZHJ\Schema\SchemaInterFace
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use SCLZZHJ\Schema\Schema;
+use SCLZZHJ\Schema\SchemaInterFace;
+
+//实现接口
+class DBSchema implements SchemaInterFace
 {
     public function SqlExec($sql)
     {
-        if (strstr($sql, "`TABLES`") !== false) {
-            return [
-                ['TABLE_NAME' => 'table_1', 'TABLE_COMMENT' => '表1'],
-                ['TABLE_NAME' => 'table_2', 'TABLE_COMMENT' => '表2'],
-            ];
-        } else if (strstr($sql, "`COLUMNS`") !== false) {
-            return [
-                ['COLUMN_NAME' => 'column_1', 'COLUMN_COMMENT' => '列1', 'COLUMN_TYPE' => 'varchar'],
-                ['COLUMN_NAME' => 'column_2', 'COLUMN_COMMENT' => '列2', 'COLUMN_TYPE' => 'int'],
-                ['COLUMN_NAME' => 'column_3', 'COLUMN_COMMENT' => '列3', 'COLUMN_TYPE' => 'text'],
-            ];
+        $result =  DB::select($sql);
+        if($result){
+            $result = $this->object_array($result);
         }
-        throw new SCLZZHJ\Schema\SchemaException("错误的查询");
+        return $result;
+    }
+
+    //需要将对象转换为数组
+    public function object_array($array) {
+        if(is_object($array)) {
+            $array = (array)$array;
+        } if(is_array($array)) {
+            foreach($array as $key=>$value) {
+                $array[$key] = $this->object_array($value);
+            }
+        }
+        return $array;
     }
 }
 
-//调用
-$schema = new SCLZZHJ\Schema\Schema(new TestSchema(), "name");
+//使用命令方式调用
+class SchemaCommand extends Command
+{
+    protected $signature = 'make:table_schema';
+    protected $description = '生成数据表结构';
 
-try {
-    $table = $schema->make();
-    $html = <<<EOF
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function handle()
+    {
+        $schema = new Schema(new DBSchema(), config('database.connections.mysql.database'));
+        try {
+            $table = $schema->make();
+            $html = <<<EOF
     <html lang="zh">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style ="text/css">
@@ -82,10 +106,12 @@ try {
     /*table end*/ 
 </style>
 EOF;
-    $html .= "<body>" . $table . "</body></html>";
-    file_put_contents("../index.html", $html);
-} catch (\Exception $exception) {
-    echo $exception->getMessage();
+            $html .= "<body>" . $table . "</body></html>";
+            file_put_contents("./index.html", $html);
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+        }
+    }
 }
 ```
 
